@@ -38,9 +38,10 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   const spinner = (
     <div className="flex flex-col items-center justify-center space-y-3">
       <div
-        className={` ${sizeClasses[size]} ${colorClasses[color]} animate-spin rounded-full border-2`}
+        className={` ${sizeClasses[size]} ${colorClasses[color]} animate-spin rounded-full border-2 ${className}`}
         role="status"
         aria-label="Loading"
+        data-testid="spinner-root"
       />
       {text && <p className={`${textSizeClasses[size]} animate-pulse text-gray-300`}>{text}</p>}
     </div>
@@ -66,13 +67,14 @@ export const SkeletonLoader: React.FC<{
   avatar?: boolean;
 }> = ({ lines = 3, className = '', avatar = false }) => {
   return (
-    <div className={`animate-pulse ${className}`}>
-      {avatar && <div className="mb-4 h-12 w-12 rounded-full bg-slate-700"></div>}
+    <div className={`animate-pulse ${className}`} data-testid="skeleton-container">
+      {avatar && <div className="mb-4 h-12 w-12 rounded-full bg-slate-700" data-testid="skeleton-avatar"></div>}
       <div className="space-y-3">
         {Array.from({ length: lines }).map((_, index) => (
           <div
             key={index}
             className={`h-4 rounded bg-slate-700 ${index === lines - 1 ? 'w-3/4' : 'w-full'}`}
+            data-testid="skeleton-line"
           />
         ))}
       </div>

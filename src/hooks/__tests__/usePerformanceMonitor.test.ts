@@ -1,14 +1,15 @@
+/// <reference types='@testing-library/jest-dom' />
 import { renderHook, act } from '@testing-library/react';
 import { usePerformanceMonitor } from '../usePerformanceMonitor';
 
-// Mock PerformanceObserver
-const mockObserver = {
-  observe: jest.fn(),
-  disconnect: jest.fn(),
-};
-
-const mockPerformanceObserver = jest.fn().mockImplementation(() => mockObserver);
-global.PerformanceObserver = mockPerformanceObserver;
+// Track all observe calls
+const observeCalls: any[] = [];
+class MockPerformanceObserver {
+  static supportedEntryTypes = [];
+  observe = jest.fn((args) => { observeCalls.push(args); });
+  disconnect = jest.fn();
+}
+global.PerformanceObserver = MockPerformanceObserver as any;
 
 // Mock performance API
 const mockPerformance = {
@@ -47,14 +48,15 @@ describe('usePerformanceMonitor', () => {
   });
 
   it('sets up performance observers', () => {
+    observeCalls.length = 0; // reset before test
     renderHook(() => usePerformanceMonitor());
 
     // Should create observers for different entry types
-    expect(mockPerformanceObserver).toHaveBeenCalledTimes(4);
-    expect(mockObserver.observe).toHaveBeenCalledWith({ entryTypes: ['paint'] });
-    expect(mockObserver.observe).toHaveBeenCalledWith({ entryTypes: ['layout-shift'] });
-    expect(mockObserver.observe).toHaveBeenCalledWith({ entryTypes: ['largest-contentful-paint'] });
-    expect(mockObserver.observe).toHaveBeenCalledWith({ entryTypes: ['first-input'] });
+    expect(observeCalls.length).toBe(4);
+    expect(observeCalls).toContainEqual({ entryTypes: ['paint'] });
+    expect(observeCalls).toContainEqual({ entryTypes: ['layout-shift'] });
+    expect(observeCalls).toContainEqual({ entryTypes: ['largest-contentful-paint'] });
+    expect(observeCalls).toContainEqual({ entryTypes: ['first-input'] });
   });
 
   it('measures custom metrics', async () => {

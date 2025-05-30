@@ -182,7 +182,7 @@ export function usePerformanceMonitor(options: PerformanceMonitorOptions = {}) {
 
   useEffect(() => {
     if (typeof window === 'undefined' || !('PerformanceObserver' in window)) {
-      return;
+      return undefined;
     }
 
     const observers: PerformanceObserver[] = [];
@@ -230,12 +230,13 @@ export function usePerformanceMonitor(options: PerformanceMonitorOptions = {}) {
       };
     } catch (error) {
       console.warn('Performance monitoring setup failed:', error);
+      return undefined;
     }
   }, [handlePerformanceEntry, monitorMemory, monitorNetwork]);
 
   // Measure TTFB
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === 'undefined') return undefined;
 
     const measureTTFB = () => {
       const navigation = performance.getEntriesByType(
@@ -256,6 +257,7 @@ export function usePerformanceMonitor(options: PerformanceMonitorOptions = {}) {
       window.addEventListener('load', measureTTFB);
       return () => window.removeEventListener('load', measureTTFB);
     }
+    return undefined;
   }, [logMetric, reportMetric, checkThreshold]);
 
   const getMetrics = useCallback(() => ({ ...metricsRef.current }), []);
