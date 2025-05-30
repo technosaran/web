@@ -45,8 +45,11 @@ const SEOHead: React.FC<SEOHeadProps> = ({
     url: url,
     image: image,
     sameAs: [
-      'https://github.com/saran',
-      'https://linkedin.com/in/saran-r-b2b1a5275/',
+      'https://github.com/technosaran',
+      'https://www.linkedin.com/in/saran-r-b2b1a5275?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app',
+      'https://youtube.com/@saran-dev?si=ZXfwlya4MTY0i_E0',
+      'https://x.com/techno__saran?s=21',
+      'https://www.instagram.com/technosaran.dev?igsh=MTY5MWQ4OThsZHJjYg%3D%3D&utm_source=qr',
       'mailto:saransci2006@gmail.com',
     ],
     knowsAbout: [

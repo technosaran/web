@@ -1,0 +1,109 @@
+%PDF-1.4
+1 0 obj
+<<
+/Type /Catalog
+/Pages 2 0 R
+>>
+endobj
+
+2 0 obj
+<<
+/Type /Pages
+/Kids [3 0 R]
+/Count 1
+>>
+endobj
+
+3 0 obj
+<<
+/Type /Page
+/Parent 2 0 R
+/MediaBox [0 0 612 792]
+/Contents 4 0 R
+/Resources <<
+/Font <<
+/F1 5 0 R
+>>
+>>
+>>
+endobj
+
+4 0 obj
+<<
+/Length 500
+>>
+stream
+BT
+/F1 24 Tf
+50 750 Td
+(SARAN R - RESUME) Tj
+0 -50 Td
+/F1 16 Tf
+(AI & ML Student | Java Developer | Trading Enthusiast) Tj
+0 -40 Td
+/F1 12 Tf
+(Email: techno.saran@example.com) Tj
+0 -20 Td
+(Phone: +91 XXXXXXXXXX) Tj
+0 -20 Td
+(LinkedIn: linkedin.com/in/techno-saran) Tj
+0 -40 Td
+/F1 14 Tf
+(EDUCATION) Tj
+0 -20 Td
+/F1 12 Tf
+(B.Tech in Artificial Intelligence and Machine Learning) Tj
+0 -15 Td
+(Panimalar Engineering College, Chennai) Tj
+0 -15 Td
+(2023-2027) Tj
+0 -40 Td
+/F1 14 Tf
+(EXPERIENCE) Tj
+0 -20 Td
+/F1 12 Tf
+(Cloud Computing Intern - CodTech IT Solutions Pvt Ltd) Tj
+0 -15 Td
+(May 30, 2025 - June 30, 2025) Tj
+0 -15 Td
+(Intern ID: CTO4DF1821) Tj
+0 -40 Td
+/F1 14 Tf
+(SKILLS) Tj
+0 -20 Td
+/F1 12 Tf
+(Programming: Java, Python, Pine Script, SQL) Tj
+0 -15 Td
+(AI/ML: Pandas, NumPy, Scikit-learn, Machine Learning) Tj
+0 -15 Td
+(Web: HTML, CSS, JavaScript, React, Next.js) Tj
+0 -15 Td
+(Tools: VS Code, IntelliJ, Git, TradingView, MT5) Tj
+ET
+endstream
+endobj
+
+5 0 obj
+<<
+/Type /Font
+/Subtype /Type1
+/BaseFont /Helvetica
+>>
+endobj
+
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000245 00000 n 
+0000000795 00000 n 
+trailer
+<<
+/Size 6
+/Root 1 0 R
+>>
+startxref
+862
+%%EOF
