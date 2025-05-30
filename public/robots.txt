@@ -1,0 +1,66 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://saran.dev/web/sitemap.xml
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1
+
+# Disallow sensitive areas (if any)
+Disallow: /web/_next/
+Disallow: /web/api/
+
+# Allow specific important pages
+Allow: /web/
+Allow: /web/index.html
+Allow: /web/manifest.json
+
+# Block common bot traps
+Disallow: /web/admin/
+Disallow: /web/login/
+Disallow: /web/wp-admin/
+Disallow: /web/wp-content/
+Disallow: /web/wp-includes/
+
+# Social media crawlers
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: WhatsApp
+Allow: /
+
+# Search engine specific rules
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 1
+
+# Block malicious bots
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: BLEXBot
+Disallow: /

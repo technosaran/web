@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline - Saran Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            padding: 40px;
+            background: rgba(30, 27, 75, 0.3);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+        }
+
+        .icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px;
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        p {
+            color: #d1d5db;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
+        }
+
+        .status {
+            margin-top: 24px;
+            padding: 12px;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            font-size: 14px;
+            color: #fca5a5;
+        }
+
+        .features {
+            margin-top: 32px;
+            text-align: left;
+        }
+
+        .features h3 {
+            font-size: 18px;
+            margin-bottom: 16px;
+            color: #a78bfa;
+        }
+
+        .features ul {
+            list-style: none;
+            space-y: 8px;
+        }
+
+        .features li {
+            padding: 8px 0;
+            color: #d1d5db;
+            font-size: 14px;
+        }
+
+        .features li::before {
+            content: "🚀";
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">🛰️</div>
+        <h1>Space Connection Lost</h1>
+        <p>
+            Houston, we have a problem! Your internet connection seems to be offline,
+            but don't worry - some features are still available through our quantum cache.
+        </p>
+
+        <button class="button" onclick="window.location.reload()">
+            🔄 Retry Connection
+        </button>
+
+        <div class="status">
+            <strong>Status:</strong> Offline Mode Active
+        </div>
+
+        <div class="features">
+            <h3>Available Offline Features:</h3>
+            <ul>
+                <li>View cached portfolio content</li>
+                <li>Browse skills and certifications</li>
+                <li>Access contact information</li>
+                <li>Navigate between sections</li>
+            </ul>
+        </div>
+
+        <script>
+            // Determine base path
+            const basePath = window.location.pathname.includes('/web/') ? '/web' : '';
+
+            // Check for connection periodically
+            function checkConnection() {
+                if (navigator.onLine) {
+                    window.location.href = basePath + '/';
+                }
+            }
+
+            // Check every 5 seconds
+            setInterval(checkConnection, 5000);
+
+            // Listen for online event
+            window.addEventListener('online', function() {
+                window.location.href = basePath + '/';
+            });
+
+            // Update status
+            function updateStatus() {
+                const statusEl = document.querySelector('.status');
+                if (navigator.onLine) {
+                    statusEl.innerHTML = '<strong>Status:</strong> Connection Restored! Redirecting...';
+                    statusEl.style.background = 'rgba(34, 197, 94, 0.1)';
+                    statusEl.style.borderColor = 'rgba(34, 197, 94, 0.3)';
+                    statusEl.style.color = '#86efac';
+                    setTimeout(() => {
+                        window.location.href = basePath + '/';
+                    }, 1000);
+                } else {
+                    statusEl.innerHTML = '<strong>Status:</strong> Offline Mode Active';
+                }
+            }
+
+            // Check status on load
+            updateStatus();
+
+            // Listen for connection changes
+            window.addEventListener('online', updateStatus);
+            window.addEventListener('offline', updateStatus);
+        </script>
+    </div>
+</body>
+</html>

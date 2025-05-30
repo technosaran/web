@@ -1,36 +1,260 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 Saran's Portfolio - Enhanced & Optimized
 
-## Getting Started
+A modern, secure, and high-performance portfolio website built with Next.js 15, featuring comprehensive security measures, performance optimizations, and accessibility enhancements.
 
-First, run the development server:
+## ✨ Features
 
+### 🔒 Security Enhancements
+- **Content Security Policy (CSP)** with nonce-based script execution
+- **Security Headers** (X-Frame-Options, X-Content-Type-Options, etc.)
+- **Rate Limiting** middleware to prevent abuse
+- **Input Sanitization** with DOMPurify
+- **Form Validation** with comprehensive security checks
+- **XSS Protection** and injection prevention
+- **CORS Configuration** with allowed origins
+- **Secure Contact Form** with honeypot and validation
+
+### ⚡ Performance Optimizations
+- **Service Worker** for offline support and caching
+- **Lazy Loading** with Intersection Observer
+- **Image Optimization** with WebP/AVIF support
+- **Code Splitting** and dynamic imports
+- **Bundle Analysis** and optimization
+- **Performance Monitoring** with Web Vitals
+- **Resource Preloading** and DNS prefetching
+- **Compression** and minification
+
+### 🎯 SEO & Accessibility
+- **Structured Data** (JSON-LD) for better search visibility
+- **Open Graph** and Twitter Card meta tags
+- **Semantic HTML** with proper ARIA attributes
+- **Sitemap** and robots.txt
+- **Canonical URLs** and meta descriptions
+- **Mobile-first** responsive design
+- **Keyboard Navigation** support
+- **Screen Reader** compatibility
+
+### 📱 Progressive Web App (PWA)
+- **Web App Manifest** for installability
+- **Service Worker** for offline functionality
+- **App Icons** for all platforms
+- **Splash Screens** and theme colors
+- **Background Sync** for form submissions
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 15 with React 19
+- **Language**: TypeScript with strict mode
+- **Styling**: Tailwind CSS 4
+- **Security**: Custom middleware with CSP
+- **Performance**: Vercel Analytics & Speed Insights
+- **Validation**: DOMPurify & Validator.js
+- **PWA**: Custom service worker
+- **Build**: Custom optimization scripts
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js 18+
+- npm or yarn
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/saran/portfolio.git
+   cd portfolio
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Run development server**
+   ```bash
+   npm run dev
+   ```
+
+4. **Open in browser**
+   ```
+   http://localhost:3000
+   ```
+
+## 📦 Build & Deployment
+
+### Development Build
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Production Build
+```bash
+npm run build:production
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Build Analysis
+```bash
+npm run build:analyze
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Security Check
+```bash
+npm run security-check
+```
 
-## Learn More
+### Type Checking
+```bash
+npm run type-check
+```
 
-To learn more about Next.js, take a look at the following resources:
+## 🔧 Configuration
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Environment Variables
+Create a `.env.local` file:
+```env
+# Analytics (optional)
+NEXT_PUBLIC_GA_ID=your-google-analytics-id
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Contact Form
+NEXT_PUBLIC_FORMSPREE_ID=your-formspree-id
 
-## Deploy on Vercel
+# Security
+NEXT_PUBLIC_SITE_URL=https://your-domain.com
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Security Configuration
+Security settings can be modified in `src/middleware.ts`:
+- Rate limiting rules
+- Allowed origins
+- Security headers
+- Content Security Policy
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Performance Configuration
+Performance settings in `next.config.ts`:
+- Image optimization
+- Compression settings
+- Bundle optimization
+- Cache headers
+
+## 📊 Performance Metrics
+
+The build process generates a comprehensive performance report including:
+- Bundle size analysis
+- Asset optimization recommendations
+- Core Web Vitals tracking
+- Security header validation
+
+## 🔒 Security Features
+
+### Input Validation
+- Email validation with RFC compliance
+- Name validation with character restrictions
+- Message length and content validation
+- Honeypot fields for spam protection
+
+### Rate Limiting
+- 100 requests per 15-minute window
+- IP-based tracking
+- Automatic cleanup of expired entries
+- Configurable limits per endpoint
+
+### Content Security Policy
+- Strict script execution policies
+- Nonce-based inline scripts
+- Restricted resource loading
+- XSS prevention measures
+
+## 🎨 Customization
+
+### Styling
+- Modify `src/app/globals.css` for global styles
+- Update Tailwind configuration in `tailwind.config.js`
+- Customize color schemes and animations
+
+### Content
+- Update personal information in `src/app/page.tsx`
+- Modify project data and skills
+- Add new sections or components
+
+### Security
+- Adjust rate limiting in `src/middleware.ts`
+- Update CSP policies in `next.config.ts`
+- Configure allowed origins and headers
+
+## 📱 PWA Features
+
+### Installation
+Users can install the portfolio as a native app on:
+- Desktop (Chrome, Edge, Safari)
+- Mobile (iOS Safari, Android Chrome)
+- Progressive enhancement for all browsers
+
+### Offline Support
+- Cached static assets
+- Offline page with connection status
+- Background sync for form submissions
+- Service worker updates
+
+## 🧪 Testing
+
+### Manual Testing
+```bash
+# Build and test locally
+npm run test:build
+
+# Check for TypeScript errors
+npm run type-check
+
+# Lint code
+npm run lint:fix
+```
+
+### Security Testing
+- CSP violation monitoring
+- XSS attempt detection
+- Rate limiting validation
+- Input sanitization testing
+
+## 📈 Monitoring
+
+### Performance Monitoring
+- Real User Monitoring (RUM) with Vercel
+- Core Web Vitals tracking
+- Bundle size monitoring
+- Resource timing analysis
+
+### Security Monitoring
+- CSP violation reporting
+- Rate limit breach detection
+- Suspicious request logging
+- Error boundary tracking
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Run tests and linting
+5. Submit a pull request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Next.js team for the amazing framework
+- Vercel for hosting and analytics
+- Tailwind CSS for the utility-first approach
+- The open-source community for security best practices
+
+## 📞 Contact
+
+- **Email**: saransci2006@gmail.com
+- **LinkedIn**: [Saran R](https://linkedin.com/in/saran-r-b2b1a5275/)
+- **Portfolio**: [saran.dev](https://saran.dev)
+
+---
+
+**Built with ❤️ and ⚡ by Saran**
