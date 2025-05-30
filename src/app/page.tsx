@@ -212,7 +212,7 @@ export default function Portfolio() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [prevCertification, nextCertification]);
 
   // Intersection observer hooks for lazy loading
   const { ref: aboutRef, inView: aboutInView } = useInView({

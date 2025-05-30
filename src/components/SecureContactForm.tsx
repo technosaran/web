@@ -153,7 +153,7 @@ const SecureContactForm: React.FC = () => {
         setTimeout(() => {
           setStatus('idle');
           setErrors(prev => {
-            const { general, ...rest } = prev;
+            const { general: _, ...rest } = prev;
             return rest;
           });
         }, 5000);

@@ -81,7 +81,7 @@ export const metadata: Metadata = {
     images: [`${process.env.NODE_ENV === 'production' ? '/web' : ''}/og-image.jpg`],
   },
   verification: {
-    google: 'your-google-verification-code',
+    google: process.env.GOOGLE_VERIFICATION_CODE || '',
   },
   alternates: {
     canonical: 'https://saran.dev',
