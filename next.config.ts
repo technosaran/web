@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import type { Configuration } from 'webpack';
 
 const isProd = process.env.NODE_ENV === 'production';
 const isAnalyze = process.env.ANALYZE === 'true';
@@ -11,8 +12,8 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 const nextConfig: NextConfig = {
   output: 'export',
   trailingSlash: true,
-  basePath: isProd ? '/web' : '',
-  assetPrefix: isProd ? '/web/' : '',
+  basePath: isProd ? '/website' : '',
+  assetPrefix: isProd ? '/website/' : '',
 
   // Enhanced image optimization
   images: {
@@ -37,29 +38,32 @@ const nextConfig: NextConfig = {
   },
 
   // Webpack optimizations
-  webpack: (config, { dev, isServer }) => {
+  webpack: (config: Configuration, { dev, isServer }: { dev: boolean; isServer: boolean }) => {
     // Optimize bundle size
     if (!dev && !isServer) {
-      config.optimization.splitChunks = {
-        chunks: 'all',
-        cacheGroups: {
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-            chunks: 'all',
-          },
-          common: {
-            name: 'common',
-            minChunks: 2,
-            chunks: 'all',
-            enforce: true,
+      config.optimization = {
+        ...config.optimization,
+        splitChunks: {
+          chunks: 'all',
+          cacheGroups: {
+            vendor: {
+              test: /[\\/]node_modules[\\/]/,
+              name: 'vendors',
+              chunks: 'all',
+            },
+            common: {
+              name: 'common',
+              minChunks: 2,
+              chunks: 'all',
+              enforce: true,
+            },
           },
         },
       };
     }
 
     // Add SVG support
-    config.module.rules.push({
+    config.module?.rules?.push({
       test: /\.svg$/,
       use: ['@svgr/webpack'],
     });
