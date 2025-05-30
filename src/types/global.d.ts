@@ -4,11 +4,11 @@ declare global {
   interface Window {
     // Service Worker
     workbox?: any;
-    
+
     // Analytics
     gtag?: (...args: any[]) => void;
     dataLayer?: any[];
-    
+
     // Performance monitoring
     webVitals?: {
       getCLS: (callback: (metric: any) => void) => void;
@@ -17,7 +17,7 @@ declare global {
       getLCP: (callback: (metric: any) => void) => void;
       getTTFB: (callback: (metric: any) => void) => void;
     };
-    
+
     // Security
     CSP_NONCE?: string;
   }
@@ -30,10 +30,10 @@ declare global {
       rtt: number;
       saveData: boolean;
     };
-    
+
     // Device Memory API
     deviceMemory?: number;
-    
+
     // Hardware Concurrency
     hardwareConcurrency?: number;
   }

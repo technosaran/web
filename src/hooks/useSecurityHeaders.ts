@@ -19,7 +19,7 @@ export const useSecurityHeaders = () => {
           'X-Content-Type-Options': headers.get('X-Content-Type-Options'),
           'Referrer-Policy': headers.get('Referrer-Policy'),
           'Permissions-Policy': headers.get('Permissions-Policy'),
-          'Strict-Transport-Security': headers.get('Strict-Transport-Security')
+          'Strict-Transport-Security': headers.get('Strict-Transport-Security'),
         };
 
         if (process.env.NODE_ENV === 'development') {
@@ -48,7 +48,7 @@ export const useSecurityHeaders = () => {
         violatedDirective: event.violatedDirective,
         originalPolicy: event.originalPolicy,
         sourceFile: event.sourceFile,
-        lineNumber: event.lineNumber
+        lineNumber: event.lineNumber,
       });
 
       // In production, you would report this to your security monitoring service
@@ -73,12 +73,15 @@ export const useSecurityHeaders = () => {
       const resources = performance.getEntriesByType('resource') as PerformanceResourceTiming[];
 
       if (isHTTPS) {
-        const httpResources = resources.filter(resource =>
-          resource.name.startsWith('http://') && !resource.name.startsWith('https://')
+        const httpResources = resources.filter(
+          resource => resource.name.startsWith('http://') && !resource.name.startsWith('https://')
         );
 
         if (httpResources.length > 0) {
-          console.warn('Mixed content detected:', httpResources.map(r => r.name));
+          console.warn(
+            'Mixed content detected:',
+            httpResources.map(r => r.name)
+          );
         }
       }
     };
@@ -103,11 +106,11 @@ export const useSecurityHeaders = () => {
         /on\w+\s*=/i,
         /<iframe/i,
         /eval\(/i,
-        /document\.write/i
+        /document\.write/i,
       ];
 
-      const hasSuspiciousContent = suspiciousPatterns.some(pattern =>
-        pattern.test(url) || pattern.test(document.documentElement.innerHTML)
+      const hasSuspiciousContent = suspiciousPatterns.some(
+        pattern => pattern.test(url) || pattern.test(document.documentElement.innerHTML)
       );
 
       if (hasSuspiciousContent) {
@@ -142,10 +145,12 @@ export const useSecurityHeaders = () => {
         const [name] = cookie.trim().split('=');
 
         // Check if sensitive cookies are secure
-        if (name && (name.toLowerCase().includes('session') ||
+        if (
+          name &&
+          (name.toLowerCase().includes('session') ||
             name.toLowerCase().includes('auth') ||
-            name.toLowerCase().includes('token'))) {
-
+            name.toLowerCase().includes('token'))
+        ) {
           if (!cookie.includes('Secure') || !cookie.includes('HttpOnly')) {
             console.warn(`Insecure cookie detected: ${name}`);
           }
@@ -186,6 +191,6 @@ export const useSecurityHeaders = () => {
     reportSecurityIssue: (issue: string, details?: any) => {
       console.warn('Security Issue:', issue, details);
       // In production, send to security monitoring service
-    }
+    },
   };
 };

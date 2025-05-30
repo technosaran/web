@@ -7,7 +7,7 @@ import {
   validateMessage,
   sanitizeInput,
   contactFormLimiter,
-  logSecurityEvent
+  logSecurityEvent,
 } from '../utils/security';
 import LoadingSpinner from './LoadingSpinner';
 
@@ -30,7 +30,7 @@ const SecureContactForm: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
-    message: ''
+    message: '',
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [status, setStatus] = useState<FormStatus>('idle');
@@ -64,106 +64,118 @@ const SecureContactForm: React.FC = () => {
     return Object.keys(newErrors).length === 0;
   }, [formData]);
 
-  const handleInputChange = useCallback((
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
+  const handleInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const { name, value } = e.target;
 
-    // Sanitize input
-    const sanitizedValue = sanitizeInput(value);
+      // Sanitize input
+      const sanitizedValue = sanitizeInput(value);
 
-    setFormData(prev => ({
-      ...prev,
-      [name]: sanitizedValue
-    }));
-
-    // Clear error for this field
-    if (errors[name as keyof FormErrors]) {
-      setErrors(prev => ({
+      setFormData(prev => ({
         ...prev,
-        [name]: undefined
+        [name]: sanitizedValue,
       }));
-    }
-  }, [errors]);
 
-  const handleSubmit = useCallback(async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    // Check rate limiting
-    const clientId = 'contact_form'; // In a real app, you might use IP or user ID
-    if (!contactFormLimiter.isAllowed(clientId)) {
-      const remainingTime = Math.ceil(contactFormLimiter.getRemainingTime(clientId) / 1000 / 60);
-      setStatus('rate_limited');
-      setErrors({
-        general: `Too many attempts. Please try again in ${remainingTime} minutes.`
-      });
-      logSecurityEvent('Rate limit exceeded', { clientId, attempts: submitAttempts });
-      return;
-    }
-
-    // Validate form
-    if (!validateForm()) {
-      logSecurityEvent('Form validation failed', { errors });
-      return;
-    }
-
-    setStatus('submitting');
-    setSubmitAttempts(prev => prev + 1);
-
-    try {
-      const response = await fetch('https://formspree.io/f/mwpognoa', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: sanitizeInput(formData.name),
-          email: sanitizeInput(formData.email),
-          message: sanitizeInput(formData.message),
-          _subject: 'New Portfolio Contact Form Submission',
-          _replyto: sanitizeInput(formData.email),
-        }),
-      });
-
-      if (response.ok) {
-        setStatus('success');
-        setFormData({ name: '', email: '', message: '' });
-        setErrors({});
-        setSubmitAttempts(0);
-
-        // Reset status after 5 seconds
-        setTimeout(() => setStatus('idle'), 5000);
-      } else {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      // Clear error for this field
+      if (errors[name as keyof FormErrors]) {
+        setErrors(prev => ({
+          ...prev,
+          [name]: undefined,
+        }));
       }
-    } catch (error) {
-      console.error('Form submission error:', error);
-      setStatus('error');
-      setErrors({
-        general: 'Failed to send message. Please try again or contact me directly.'
-      });
-      logSecurityEvent('Form submission failed', { error: error instanceof Error ? error.message : 'Unknown error' });
+    },
+    [errors]
+  );
 
-      // Reset error status after 5 seconds
-      setTimeout(() => {
-        setStatus('idle');
-        setErrors(prev => {
-          const { general, ...rest } = prev;
-          return rest;
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+
+      // Check rate limiting
+      const clientId = 'contact_form'; // In a real app, you might use IP or user ID
+      if (!contactFormLimiter.isAllowed(clientId)) {
+        const remainingTime = Math.ceil(contactFormLimiter.getRemainingTime(clientId) / 1000 / 60);
+        setStatus('rate_limited');
+        setErrors({
+          general: `Too many attempts. Please try again in ${remainingTime} minutes.`,
         });
-      }, 5000);
-    }
-  }, [formData, validateForm, submitAttempts]);
+        logSecurityEvent('Rate limit exceeded', { clientId, attempts: submitAttempts });
+        return;
+      }
+
+      // Validate form
+      if (!validateForm()) {
+        logSecurityEvent('Form validation failed', { errors });
+        return;
+      }
+
+      setStatus('submitting');
+      setSubmitAttempts(prev => prev + 1);
+
+      try {
+        const response = await fetch('https://formspree.io/f/mwpognoa', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: sanitizeInput(formData.name),
+            email: sanitizeInput(formData.email),
+            message: sanitizeInput(formData.message),
+            _subject: 'New Portfolio Contact Form Submission',
+            _replyto: sanitizeInput(formData.email),
+          }),
+        });
+
+        if (response.ok) {
+          setStatus('success');
+          setFormData({ name: '', email: '', message: '' });
+          setErrors({});
+          setSubmitAttempts(0);
+
+          // Reset status after 5 seconds
+          setTimeout(() => setStatus('idle'), 5000);
+        } else {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+      } catch (error) {
+        console.error('Form submission error:', error);
+        setStatus('error');
+        setErrors({
+          general: 'Failed to send message. Please try again or contact me directly.',
+        });
+        logSecurityEvent('Form submission failed', {
+          error: error instanceof Error ? error.message : 'Unknown error',
+        });
+
+        // Reset error status after 5 seconds
+        setTimeout(() => {
+          setStatus('idle');
+          setErrors(prev => {
+            const { general, ...rest } = prev;
+            return rest;
+          });
+        }, 5000);
+      }
+    },
+    [formData, validateForm, submitAttempts]
+  );
 
   const getStatusMessage = () => {
     switch (status) {
       case 'success':
-        return { text: '🚀 Message sent successfully! I\'ll get back to you soon.', color: 'text-green-400' };
+        return {
+          text: "🚀 Message sent successfully! I'll get back to you soon.",
+          color: 'text-green-400',
+        };
       case 'error':
         return { text: '❌ Failed to send message. Please try again.', color: 'text-red-400' };
       case 'rate_limited':
-        return { text: '⏱️ Too many attempts. Please wait before trying again.', color: 'text-yellow-400' };
+        return {
+          text: '⏱️ Too many attempts. Please wait before trying again.',
+          color: 'text-yellow-400',
+        };
       default:
         return null;
     }
@@ -175,7 +187,7 @@ const SecureContactForm: React.FC = () => {
     <form onSubmit={handleSubmit} className="space-y-6" noValidate>
       {/* Name Field */}
       <div>
-        <label htmlFor="name" className="block text-sm font-medium text-gray-200 mb-2">
+        <label htmlFor="name" className="mb-2 block text-sm font-medium text-gray-200">
           Name *
         </label>
         <input
@@ -185,7 +197,7 @@ const SecureContactForm: React.FC = () => {
           value={formData.name}
           onChange={handleInputChange}
           disabled={status === 'submitting'}
-          className={`w-full px-4 py-3 bg-slate-800/50 backdrop-blur-sm border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 transition-all duration-300 ${
+          className={`w-full rounded-lg border bg-slate-800/50 px-4 py-3 text-white placeholder-gray-400 backdrop-blur-sm transition-all duration-300 focus:ring-2 focus:outline-none ${
             errors.name
               ? 'border-red-500 focus:ring-red-500/50'
               : 'border-purple-500/30 focus:border-purple-400 focus:ring-purple-500/50'
@@ -205,7 +217,7 @@ const SecureContactForm: React.FC = () => {
 
       {/* Email Field */}
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-200 mb-2">
+        <label htmlFor="email" className="mb-2 block text-sm font-medium text-gray-200">
           Email *
         </label>
         <input
@@ -215,7 +227,7 @@ const SecureContactForm: React.FC = () => {
           value={formData.email}
           onChange={handleInputChange}
           disabled={status === 'submitting'}
-          className={`w-full px-4 py-3 bg-slate-800/50 backdrop-blur-sm border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 transition-all duration-300 ${
+          className={`w-full rounded-lg border bg-slate-800/50 px-4 py-3 text-white placeholder-gray-400 backdrop-blur-sm transition-all duration-300 focus:ring-2 focus:outline-none ${
             errors.email
               ? 'border-red-500 focus:ring-red-500/50'
               : 'border-purple-500/30 focus:border-purple-400 focus:ring-purple-500/50'
@@ -235,7 +247,7 @@ const SecureContactForm: React.FC = () => {
 
       {/* Message Field */}
       <div>
-        <label htmlFor="message" className="block text-sm font-medium text-gray-200 mb-2">
+        <label htmlFor="message" className="mb-2 block text-sm font-medium text-gray-200">
           Message *
         </label>
         <textarea
@@ -245,7 +257,7 @@ const SecureContactForm: React.FC = () => {
           value={formData.message}
           onChange={handleInputChange}
           disabled={status === 'submitting'}
-          className={`w-full px-4 py-3 bg-slate-800/50 backdrop-blur-sm border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 transition-all duration-300 resize-vertical ${
+          className={`resize-vertical w-full rounded-lg border bg-slate-800/50 px-4 py-3 text-white placeholder-gray-400 backdrop-blur-sm transition-all duration-300 focus:ring-2 focus:outline-none ${
             errors.message
               ? 'border-red-500 focus:ring-red-500/50'
               : 'border-purple-500/30 focus:border-purple-400 focus:ring-purple-500/50'
@@ -255,7 +267,7 @@ const SecureContactForm: React.FC = () => {
           aria-describedby={errors.message ? 'message-error' : undefined}
           aria-invalid={!!errors.message}
         />
-        <div className="flex justify-between mt-1">
+        <div className="mt-1 flex justify-between">
           {errors.message ? (
             <p id="message-error" className="text-sm text-red-400" role="alert">
               {errors.message}
@@ -263,15 +275,13 @@ const SecureContactForm: React.FC = () => {
           ) : (
             <span></span>
           )}
-          <span className="text-xs text-gray-400">
-            {formData.message.length}/1000
-          </span>
+          <span className="text-xs text-gray-400">{formData.message.length}/1000</span>
         </div>
       </div>
 
       {/* General Error */}
       {errors.general && (
-        <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
+        <div className="rounded-lg border border-red-500/20 bg-red-500/10 p-3">
           <p className="text-sm text-red-400" role="alert">
             {errors.general}
           </p>
@@ -280,10 +290,10 @@ const SecureContactForm: React.FC = () => {
 
       {/* Status Message */}
       {statusMessage && (
-        <div className={`p-3 bg-slate-800/30 border border-purple-500/20 rounded-lg ${statusMessage.color}`}>
-          <p className="text-sm">
-            {statusMessage.text}
-          </p>
+        <div
+          className={`rounded-lg border border-purple-500/20 bg-slate-800/30 p-3 ${statusMessage.color}`}
+        >
+          <p className="text-sm">{statusMessage.text}</p>
         </div>
       )}
 
@@ -291,7 +301,7 @@ const SecureContactForm: React.FC = () => {
       <button
         type="submit"
         disabled={status === 'submitting' || status === 'rate_limited'}
-        className="w-full group relative px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-medium rounded-lg hover:from-purple-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+        className="group relative w-full transform rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 px-6 py-3 font-medium text-white transition-all duration-300 hover:scale-105 hover:from-purple-700 hover:to-blue-700 focus:ring-2 focus:ring-purple-500/50 focus:outline-none disabled:transform-none disabled:cursor-not-allowed disabled:opacity-50"
         aria-describedby="submit-status"
       >
         {status === 'submitting' ? (
@@ -302,14 +312,22 @@ const SecureContactForm: React.FC = () => {
         ) : (
           <span className="flex items-center justify-center">
             ⚛️ Send Quantum Message
-            <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
+            <svg
+              className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                clipRule="evenodd"
+              />
             </svg>
           </span>
         )}
       </button>
 
-      <p className="text-xs text-gray-400 text-center">
+      <p className="text-center text-xs text-gray-400">
         * Required fields. Your information is secure and will not be shared.
       </p>
     </form>

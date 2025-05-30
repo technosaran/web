@@ -7,55 +7,49 @@ interface LoadingSpinnerProps {
   color?: 'primary' | 'secondary' | 'white';
   text?: string;
   fullScreen?: boolean;
+  className?: string;
 }
 
 const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   size = 'md',
   color = 'primary',
   text,
-  fullScreen = false
+  fullScreen = false,
+  className = '',
 }) => {
   const sizeClasses = {
     sm: 'w-4 h-4',
     md: 'w-8 h-8',
-    lg: 'w-12 h-12'
+    lg: 'w-12 h-12',
   };
 
   const colorClasses = {
     primary: 'border-purple-500 border-t-transparent',
     secondary: 'border-blue-500 border-t-transparent',
-    white: 'border-white border-t-transparent'
+    white: 'border-white border-t-transparent',
   };
 
   const textSizeClasses = {
     sm: 'text-sm',
     md: 'text-base',
-    lg: 'text-lg'
+    lg: 'text-lg',
   };
 
   const spinner = (
     <div className="flex flex-col items-center justify-center space-y-3">
       <div
-        className={`
-          ${sizeClasses[size]} 
-          ${colorClasses[color]} 
-          border-2 rounded-full animate-spin
-        `}
+        className={` ${sizeClasses[size]} ${colorClasses[color]} animate-spin rounded-full border-2`}
         role="status"
         aria-label="Loading"
       />
-      {text && (
-        <p className={`${textSizeClasses[size]} text-gray-300 animate-pulse`}>
-          {text}
-        </p>
-      )}
+      {text && <p className={`${textSizeClasses[size]} animate-pulse text-gray-300`}>{text}</p>}
     </div>
   );
 
   if (fullScreen) {
     return (
-      <div className="fixed inset-0 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center z-50">
-        <div className="bg-slate-800/50 backdrop-blur-sm border border-purple-500/20 rounded-xl p-8">
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm">
+        <div className="rounded-xl border border-purple-500/20 bg-slate-800/50 p-8 backdrop-blur-sm">
           {spinner}
         </div>
       </div>
@@ -66,27 +60,19 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
 };
 
 // Skeleton loader for content
-export const SkeletonLoader: React.FC<{ 
-  lines?: number; 
+export const SkeletonLoader: React.FC<{
+  lines?: number;
   className?: string;
   avatar?: boolean;
-}> = ({ 
-  lines = 3, 
-  className = '',
-  avatar = false 
-}) => {
+}> = ({ lines = 3, className = '', avatar = false }) => {
   return (
     <div className={`animate-pulse ${className}`}>
-      {avatar && (
-        <div className="w-12 h-12 bg-slate-700 rounded-full mb-4"></div>
-      )}
+      {avatar && <div className="mb-4 h-12 w-12 rounded-full bg-slate-700"></div>}
       <div className="space-y-3">
         {Array.from({ length: lines }).map((_, index) => (
           <div
             key={index}
-            className={`h-4 bg-slate-700 rounded ${
-              index === lines - 1 ? 'w-3/4' : 'w-full'
-            }`}
+            className={`h-4 rounded bg-slate-700 ${index === lines - 1 ? 'w-3/4' : 'w-full'}`}
           />
         ))}
       </div>
@@ -95,8 +81,8 @@ export const SkeletonLoader: React.FC<{
 };
 
 // Loading overlay for sections
-export const SectionLoader: React.FC<{ 
-  isLoading: boolean; 
+export const SectionLoader: React.FC<{
+  isLoading: boolean;
   children: React.ReactNode;
   text?: string;
 }> = ({ isLoading, children, text = 'Loading...' }) => {
@@ -104,10 +90,8 @@ export const SectionLoader: React.FC<{
 
   return (
     <div className="relative">
-      <div className="opacity-50 pointer-events-none">
-        {children}
-      </div>
-      <div className="absolute inset-0 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm rounded-lg">
+      <div className="pointer-events-none opacity-50">{children}</div>
+      <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-slate-900/50 backdrop-blur-sm">
         <LoadingSpinner text={text} />
       </div>
     </div>

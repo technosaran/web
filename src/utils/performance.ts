@@ -22,7 +22,7 @@ export const throttle = <T extends (...args: any[]) => any>(
     if (!inThrottle) {
       func(...args);
       inThrottle = true;
-      setTimeout(() => inThrottle = false, limit);
+      setTimeout(() => (inThrottle = false), limit);
     }
   };
 };
@@ -104,7 +104,7 @@ export const trackWebVitals = (): void => {
   // Track Largest Contentful Paint (LCP)
   if ('PerformanceObserver' in window) {
     try {
-      const observer = new PerformanceObserver((list) => {
+      const observer = new PerformanceObserver(list => {
         const entries = list.getEntries();
         const lastEntry = entries[entries.length - 1];
         if (lastEntry) {
@@ -127,7 +127,7 @@ export const monitorMemoryUsage = (): void => {
     console.log('Memory usage:', {
       used: Math.round(memory.usedJSHeapSize / 1048576) + ' MB',
       total: Math.round(memory.totalJSHeapSize / 1048576) + ' MB',
-      limit: Math.round(memory.jsHeapSizeLimit / 1048576) + ' MB'
+      limit: Math.round(memory.jsHeapSizeLimit / 1048576) + ' MB',
     });
   }
 };

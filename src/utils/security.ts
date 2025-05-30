@@ -4,9 +4,9 @@ import validator from 'validator';
 // Input sanitization utilities
 export const sanitizeInput = (input: string): string => {
   if (typeof window !== 'undefined') {
-    return DOMPurify.sanitize(input, { 
+    return DOMPurify.sanitize(input, {
       ALLOWED_TAGS: [],
-      ALLOWED_ATTR: []
+      ALLOWED_ATTR: [],
     });
   }
   // Server-side fallback
@@ -17,7 +17,7 @@ export const sanitizeHTML = (html: string): string => {
   if (typeof window !== 'undefined') {
     return DOMPurify.sanitize(html, {
       ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'a', 'p', 'br'],
-      ALLOWED_ATTR: ['href', 'target', 'rel']
+      ALLOWED_ATTR: ['href', 'target', 'rel'],
     });
   }
   return html;
@@ -56,14 +56,14 @@ class RateLimiter {
   isAllowed(identifier: string): boolean {
     const now = Date.now();
     const attempts = this.attempts.get(identifier) || [];
-    
+
     // Remove old attempts outside the window
     const validAttempts = attempts.filter(time => now - time < this.windowMs);
-    
+
     if (validAttempts.length >= this.maxAttempts) {
       return false;
     }
-    
+
     validAttempts.push(now);
     this.attempts.set(identifier, validAttempts);
     return true;
@@ -72,7 +72,7 @@ class RateLimiter {
   getRemainingTime(identifier: string): number {
     const attempts = this.attempts.get(identifier) || [];
     if (attempts.length < this.maxAttempts) return 0;
-    
+
     const oldestAttempt = Math.min(...attempts);
     const remainingTime = this.windowMs - (Date.now() - oldestAttempt);
     return Math.max(0, remainingTime);
@@ -83,12 +83,13 @@ export const contactFormLimiter = new RateLimiter(3, 10 * 60 * 1000); // 3 attem
 
 // Secure external link handler
 export const createSecureLink = (url: string): { href: string; target: string; rel: string } => {
-  const isExternal = !url.startsWith('/') && !url.startsWith('#') && !url.includes(window?.location?.hostname || '');
-  
+  const isExternal =
+    !url.startsWith('/') && !url.startsWith('#') && !url.includes(window?.location?.hostname || '');
+
   return {
     href: url,
     target: isExternal ? '_blank' : '_self',
-    rel: isExternal ? 'noopener noreferrer nofollow' : ''
+    rel: isExternal ? 'noopener noreferrer nofollow' : '',
   };
 };
 

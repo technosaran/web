@@ -1,6 +1,6 @@
-# 🚀 Saran's Portfolio - Enhanced & Optimized
+# 🚀 Saran's AI/ML Portfolio - Enterprise Edition v2.0
 
-A modern, secure, and high-performance portfolio website built with Next.js 15, featuring comprehensive security measures, performance optimizations, and accessibility enhancements.
+A cutting-edge, production-ready portfolio website showcasing AI/ML expertise. Built with Next.js 15, React 19, and modern development practices. Features real-time performance monitoring, advanced animations, comprehensive testing, and enterprise-level optimizations.
 
 ## ✨ Features
 
@@ -41,11 +41,53 @@ A modern, secure, and high-performance portfolio website built with Next.js 15, 
 - **Splash Screens** and theme colors
 - **Background Sync** for form submissions
 
+## 🆕 What's New in v2.0
+
+### 🚀 **Major Upgrades**
+- **Real-time Performance Monitoring** with Core Web Vitals tracking and alerts
+- **Advanced State Management** with Zustand for scalable data flow
+- **Professional Animations** powered by Framer Motion
+- **Comprehensive Testing Suite** with Jest & React Testing Library
+- **Automated Code Formatting** with Prettier and Tailwind CSS plugin
+- **Bundle Analysis Tools** for optimization insights
+- **Enhanced TypeScript** configuration with strict mode
+- **Performance Alerts** with threshold-based monitoring
+
+### 🧪 **New Development Tools**
+```bash
+# Run comprehensive tests
+npm test
+
+# Format code automatically
+npm run format
+
+# Analyze bundle size
+npm run bundle-analyzer
+
+# Performance audit with Lighthouse
+npm run lighthouse
+
+# Type checking with strict mode
+npm run type-check
+```
+
+### 📊 **Enhanced Performance Features**
+- **Memory Usage Tracking** with leak detection
+- **Network Condition Awareness** and adaptation
+- **Custom Metric Measurement** for any operation
+- **Performance Score Calculation** with recommendations
+- **Real-time Alerts** for performance issues
+
 ## 🛠️ Tech Stack
 
 - **Framework**: Next.js 15 with React 19
 - **Language**: TypeScript with strict mode
 - **Styling**: Tailwind CSS 4
+- **State Management**: Zustand
+- **Animations**: Framer Motion
+- **Icons**: Lucide React
+- **Testing**: Jest + React Testing Library
+- **Formatting**: Prettier + Tailwind CSS Plugin
 - **Security**: Custom middleware with CSP
 - **Performance**: Vercel Analytics & Speed Insights
 - **Validation**: DOMPurify & Validator.js

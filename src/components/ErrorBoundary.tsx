@@ -26,7 +26,7 @@ class ErrorBoundary extends Component<Props, State> {
   override componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     this.setState({
       error,
-      errorInfo
+      errorInfo,
     });
 
     // Log error to console in development
@@ -45,37 +45,35 @@ class ErrorBoundary extends Component<Props, State> {
       }
 
       return (
-        <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
-          <div className="max-w-md w-full bg-slate-800/50 backdrop-blur-sm border border-red-500/20 rounded-xl p-8 text-center">
-            <div className="w-16 h-16 mx-auto mb-6 bg-gradient-to-r from-red-500 to-orange-500 rounded-full flex items-center justify-center">
-              <span className="text-white text-2xl">⚠️</span>
+        <div className="flex min-h-screen items-center justify-center bg-slate-900 p-4">
+          <div className="w-full max-w-md rounded-xl border border-red-500/20 bg-slate-800/50 p-8 text-center backdrop-blur-sm">
+            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-r from-red-500 to-orange-500">
+              <span className="text-2xl text-white">⚠️</span>
             </div>
-            <h2 className="text-2xl font-bold text-white mb-4">
-              Oops! Something went wrong
-            </h2>
-            <p className="text-gray-300 mb-6">
+            <h2 className="mb-4 text-2xl font-bold text-white">Oops! Something went wrong</h2>
+            <p className="mb-6 text-gray-300">
               We encountered an unexpected error. Please try refreshing the page.
             </p>
             <div className="space-y-3">
               <button
                 onClick={() => window.location.reload()}
-                className="w-full px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300"
+                className="w-full rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 px-4 py-2 font-medium text-white transition-all duration-300 hover:from-blue-700 hover:to-purple-700"
               >
                 Refresh Page
               </button>
               <button
                 onClick={() => this.setState({ hasError: false })}
-                className="w-full px-4 py-2 border border-gray-500 text-gray-300 font-medium rounded-lg hover:bg-gray-700 transition-all duration-300"
+                className="w-full rounded-lg border border-gray-500 px-4 py-2 font-medium text-gray-300 transition-all duration-300 hover:bg-gray-700"
               >
                 Try Again
               </button>
             </div>
             {process.env.NODE_ENV === 'development' && this.state.error && (
               <details className="mt-6 text-left">
-                <summary className="text-red-400 cursor-pointer mb-2">
+                <summary className="mb-2 cursor-pointer text-red-400">
                   Error Details (Development)
                 </summary>
-                <pre className="text-xs text-gray-400 bg-slate-900 p-3 rounded overflow-auto max-h-40">
+                <pre className="max-h-40 overflow-auto rounded bg-slate-900 p-3 text-xs text-gray-400">
                   {this.state.error.toString()}
                   {this.state.errorInfo?.componentStack}
                 </pre>
