@@ -1,6 +1,5 @@
 'use client';
 
-import Image from "next/image";
 import { useState, useEffect } from "react";
 
 export default function Portfolio() {
@@ -65,7 +64,7 @@ export default function Portfolio() {
         setFormStatus('error');
         setTimeout(() => setFormStatus('idle'), 5000);
       }
-    } catch (error) {
+    } catch {
       setFormStatus('error');
       setTimeout(() => setFormStatus('idle'), 5000);
     }
@@ -174,7 +173,7 @@ export default function Portfolio() {
               </div>
             </div>
             <h1 className="text-4xl font-bold text-white sm:text-5xl md:text-6xl mb-4">
-              Hi, I'm{" "}
+              Hi, I&apos;m{" "}
               <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Saran</span>
             </h1>
             <p className="max-w-md mx-auto text-xl text-gray-300 sm:text-2xl md:max-w-3xl mb-3">
@@ -260,7 +259,7 @@ export default function Portfolio() {
                 </h3>
                 <div className="space-y-3 text-gray-300 text-sm">
                   <p>
-                    I'm a dedicated software engineer passionate about building scalable web applications
+                    I&apos;m a dedicated software engineer passionate about building scalable web applications
                     and solving complex technical challenges. My journey in technology started with curiosity
                     about how digital systems work, leading me to develop expertise in modern web technologies.
                   </p>
